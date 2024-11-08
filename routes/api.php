@@ -128,10 +128,17 @@ Route::middleware('auth:sanctum')->prefix('USERS')->group(function () use ($USER
     Route::delete('/{id}', [UserController::class, 'destroy'])->middleware("document_access:$USER_ACCOUNTS, $DELETE");
 });
 
+Route::post('/loginClient', [AuthController::class, 'clientLogin']);
+//2FA
+Route::post('/client/SendVerification', [CustomerController::class, 'sendCode']);
+Route::post('/client/VerifyVerification/{code}', [CustomerController::class, 'verifyCode']);
+
 // Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/createUser', [UserController::class, 'store'])->middleware('auth:sanctum');
+
+
 
 // Libraries routes
 Route::middleware('auth:sanctum')->prefix('LIBRARIES')->group(function () use ($LIBRARIES, $VIEW, $CREATE, $UPDATE, $DELETE) {
